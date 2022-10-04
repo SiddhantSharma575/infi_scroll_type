@@ -16,6 +16,7 @@ const Home : React.FC = () => {
   const [loading,setLoading] = useState<boolean>(false); 
   const [inputVal,setInputVal] = useState<string>("");
   const [limitReach,setLimitReach] = useState<boolean>(false);
+  const [error,setError] = useState<string>("");
   const navigate = useNavigate();
   
 
@@ -30,7 +31,7 @@ const Home : React.FC = () => {
         setAllPosts(response.data.hits);
         setLoading(false);
       }).catch((error) => {
-        console.log("Bad Request")
+        setError("404! Bad Request");
         setLoading(false); 
       })
     }
@@ -74,10 +75,9 @@ const Home : React.FC = () => {
             setLoading(false);
           })
           .catch((error) => {
-            // setError("404 BAD REQUEST");
+            setError("404 BAD REQUEST");
             setLoading(false);
           });
-        // if (temp.length === 0) setLimitReach(true);
         if(temp.length === 0) { 
           setLoading(false);
           setLimitReach(true);
@@ -102,7 +102,9 @@ const Home : React.FC = () => {
   }
 
   return (
-    <>
+    <> 
+      {
+        error.length > 0 ? <h1>BAD REQUEST</h1> :    <>
       <div className="search_container">
             <input
               type="text"
@@ -135,6 +137,8 @@ const Home : React.FC = () => {
         {loading && <h1>Loading....</h1>}
         {limitReach && <h1>Exceeded the limit</h1>}
      </div>
+    </>
+      }
     </>
   )
 }
